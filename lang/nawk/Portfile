@@ -19,17 +19,23 @@ checksums        rmd160  3872ef2407a4ad57f55c45dc60fc917eca7a614e \
 dist_subdir      ${name}/${version}
 
 extract.mkdir    yes
+post-extract {
+    #touch ${worksrcpath}/awkgram.y
+    delete ${worksrcpath}/ytab.c
+    #delete ${worksrcpath}/ytab.h
+    #delete ${worksrcpath}/ytab.c ${worksrcpath}/ytab.h
+}
 
-patchfiles       unsigned-fmt.patch
+patchfiles       unsigned-fmt.patch yacc-dependencies.patch
 
 use_configure    no
 
-use_parallel_build no
+build.type bsd
 build.target
 build.args       CFLAGS='-DHAS_ISBLANK ${configure.cflags}\
                     [get_canonical_archflags]' \
-                 YACC='bison -d -y' \
-                 CC='"${configure.cc}" -Wall -g'
+                 CC='"${configure.cc}" -Wall -g' \
+                 YACC='bison -d -y'
 
 destroot {
 	xinstall ${worksrcpath}/a.out ${destroot}${prefix}/bin/nawk

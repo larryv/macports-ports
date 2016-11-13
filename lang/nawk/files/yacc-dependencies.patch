@@ -1,0 +1,60 @@
+Split generation and compilation of the awk parser
+
+The current makefile generates and compiles the parser with one rule.
+This has a couple of downsides, both of which are solved by separating
+parser generation from compilation.
+
+* Despite the inclusion of a pregenerated parser, builds currently
+  require yacc/bison unless the makefile is manually modified.
+  Separating generation and compilation allows use of the pregenerated
+  parser by default; users and packagers who want a fresh parser can
+  simply run "rm ytab.c ytab.h" before "make".
+
+* When building in parallel, the current single rule introduces a race
+  condition wherein some OFILES build before ytab.o and get the bundled
+  ytab.h, while others build afterwards and get the generated ytab.h.
+  This discrepancy can produce strange runtime behavior (e.g.,
+  https://trac.macports.org/ticket/51812). Separating generation and
+  compilation allows a more accurate description of the dependency tree.
+
+Upstream-Status: Pending
+Signed-off-by: Lawrence Velázquez <larryv@macports.org>
+
+Index: makefile
+===================================================================
+--- makefile.orig
++++ makefile
+@@ -34,9 +34,9 @@ CC = gcc -O4 -Wall -pedantic -fno-strict
+ YACC = bison -d -y
+ YACC = yacc -d -S
+ #YFLAGS = -d -S
+-		# -S uses sprintf in yacc parser instead of sprint
++# -S uses sprintf in yacc parser instead of sprint
+ 
+-OFILES = b.o main.o parse.o proctab.o tran.o lib.o run.o lex.o
++OFILES = ytab.o b.o main.o parse.o proctab.o tran.o lib.o run.o lex.o
+ 
+ SOURCE = awk.h ytab.c ytab.h proto.h awkgram.y lex.c b.c main.c \
+ 	maketab.c parse.c lib.c run.c tran.c proctab.c 
+@@ -47,16 +47,15 @@ LISTING = awk.h proto.h awkgram.y lex.c 
+ SHIP = README FIXES $(SOURCE) ytab[ch].bak makefile  \
+ 	 awk.1
+ 
+-a.out:	ytab.o $(OFILES)
+-	$(CC) $(CFLAGS) ytab.o $(OFILES) $(ALLOC)  -lm
++a.out:	$(OFILES)
++	$(CC) $(CFLAGS) $(OFILES) $(ALLOC)  -lm
+ 
+ $(OFILES):	awk.h ytab.h proto.h
+ 
+-ytab.o:	awk.h proto.h awkgram.y
++ytab.c ytab.h:	awkgram.y
+ 	$(YACC) $(YFLAGS) awkgram.y
+-	mv y.tab.c ytab.c
+-	mv y.tab.h ytab.h
+-	$(CC) $(CFLAGS) -c ytab.c
++	-mv y.tab.c ytab.c
++	-mv y.tab.h ytab.h
+ 
+ proctab.c:	maketab
+ 	./maketab >proctab.c
