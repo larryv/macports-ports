@@ -20,7 +20,7 @@ dist_subdir      ${name}/${version}
 
 extract.mkdir    yes
 
-patchfiles       patch-run.c
+patchfiles       unsigned-fmt.patch
 
 use_configure    no
 
