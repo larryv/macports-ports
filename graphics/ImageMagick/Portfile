@@ -50,7 +50,7 @@ depends_lib                 port:bzip2 \
                             port:djvulibre \
                             port:xz \
                             port:jbigkit \
-                            port:jpeg \
+                            path:lib/libjpeg.dylib:jpeg \
                             port:lcms2 \
                             port:libpng \
                             port:libraw \

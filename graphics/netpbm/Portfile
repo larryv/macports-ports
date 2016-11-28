@@ -167,7 +167,7 @@ if {${subport} eq ${name}} {
 
     depends_lib-append  port:jasper \
                         port:jbigkit \
-                        port:jpeg \
+                        path:lib/libjpeg.dylib:jpeg \
                         port:libnetpbm \
                         port:libpng \
                         port:libxml2 \

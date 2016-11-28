@@ -32,7 +32,7 @@ checksums               rmd160  ede348e5f06913f1b876e7704ea626807f637755 \
                         size    4023549
 
 depends_lib             port:giflib \
-                        port:jpeg \
+                        path:lib/libjpeg.dylib:jpeg \
                         port:libpng \
                         port:tiff
 

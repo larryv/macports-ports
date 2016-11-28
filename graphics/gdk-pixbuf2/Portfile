@@ -32,7 +32,7 @@ depends_lib         path:lib/pkgconfig/glib-2.0.pc:glib2 \
                     port:shared-mime-info \
                     port:libpng \
                     port:jasper \
-                    port:jpeg \
+                    path:lib/libjpeg.dylib:jpeg \
                     port:tiff
 
 gobject_introspection yes
