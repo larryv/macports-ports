@@ -4,8 +4,7 @@ PortSystem        1.0
 
 name                ocaml
 epoch               1
-version             4.02.2
-revision            1
+version             4.04.0
 # When updating ocaml, also update ocaml-camlp4 and camlp5 to compatible versions
 # (c.f. #26769, #20219, #18292) or increase their revisions to rebuild them.
 set major_vers      [join [lrange [split ${version} .] 0 1] .]
@@ -16,8 +15,8 @@ description         Objective Caml is an implementation of the ML language
 license             {QPL LGPL}
 homepage            http://www.ocaml.org/
 master_sites        http://caml.inria.fr/pub/distrib/ocaml-${major_vers}/
-checksums           rmd160  f00ac72bd5a96b28a2ba6dca6b0f9c8c971d9497 \
-                    sha256  60f923988ab7ae023a0799f9699d7d7a476bf8207ee2c900f92c8288ea363085
+checksums           rmd160  ff04082b95fbc0a4397ad20a50d80c5cd77418ec \
+                    sha256  64ed6dad2316d5dff7440cea89f0f0abe07ce508b9104d1bfadf3782e79856b4
 
 long_description \
             Objective Caml is an implementation of the ML language, based on \
@@ -51,11 +50,13 @@ post-destroot {
     # Change "ld.conf" to remove ${destroot} in paths.
     reinplace "s:${destroot}::g" ${destroot}${prefix}/lib/ocaml/ld.conf
     xinstall -d ${destroot}${docdir}
-    xinstall -m 0644 -W ${worksrcpath} Changes LICENSE README ${destroot}${docdir}
+    xinstall -m 0644 -W ${worksrcpath} Changes LICENSE README.adoc \
+        ${destroot}${docdir}
 }
 
 # Variants.
 variant profile description {Enable profiling} {
+    # XXX Does this variant even work anymore?
     configure.env-append CC="gcc -pg"
 }
 
