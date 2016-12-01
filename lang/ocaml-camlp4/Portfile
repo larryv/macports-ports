@@ -4,10 +4,9 @@ PortSystem          1.0
 PortGroup           ocaml 1.0
 PortGroup           github 1.0
 
-github.setup        ocaml camlp4 4.02+6
+github.setup        ocaml camlp4 4.04+1
 name                ocaml-camlp4
 version             [string map {+ -} ${version}]
-revision            1
 categories          lang devel ml
 platforms           darwin
 license             {LGPL-2.1 OpenSSLException}
@@ -27,8 +26,8 @@ long_description    Camlp4 is a software system for writing extensible \
                     a simpler system which is easier to maintain and \
                     to learn: ppx rewriters and extension points.
 
-checksums           rmd160  03de86ab0ccec9b7c341f30132cc61caea29f7eb \
-                    sha256  5a374fd814c61c571ada334f1cdcccd7d67207d61b6fd753551b5baa9b6305fb
+checksums           rmd160  acf2f65d6bc020de787102828c21f2340bb08cb4 \
+                    sha256  a3a7d38c3e4ed36a42b7b6aad894d7a36dea749ea2aa91b9be2f852d4ec4554f
 
 configure.pre_args  --bindir=${prefix}/bin \
                     --libdir=${prefix}/lib/ocaml \
